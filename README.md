@@ -79,11 +79,11 @@ TaskFlow/
    ```
 4. Update the `.env` variables (e.g. database connection string and secret token):
    ```text
-   PORT=5000
+   PORT=****
    NODE_ENV=development
-   MONGO_URI=mongodb://127.0.0.1:27017/taskflow
+   MONGO_URI=mongodb://127.0.0.1:*****/*****
    JWT_SECRET=your_super_secret_jwt_key
-   JWT_EXPIRE=30d
+   JWT_EXPIRE=3***
    ```
 5. Run the server in development mode:
    ```bash
