@@ -95,5 +95,19 @@ export const useTasks = (filters = {}) => {
   };
 };
 
+/**
+ * Custom React Query hook to fetch a single task by ID
+ */
+export const useTask = (id) => {
+  return useQuery({
+    queryKey: ['task', id],
+    queryFn: async () => {
+      if (!id) return null;
+      const response = await api.get(`/tasks/${id}`);
+      return response.data.data;
+    },
+    enabled: !!id,
+  });
+};
+
 export default useTasks;
-// Use default export

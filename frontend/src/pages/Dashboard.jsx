@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import SearchBar from '../components/SearchBar';
 import TaskCard from '../components/TaskCard';
-import TaskForm from '../components/TaskForm';
 import ConfirmModal from '../components/ConfirmModal';
 import Pagination from '../components/Pagination';
 import EmptyState from '../components/EmptyState';
@@ -15,6 +15,8 @@ import { Plus, ListTodo, CheckCircle2, Clock } from 'lucide-react';
  * Main application dashboard containing controls and grid listings
  */
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   // 1. Local states for search, filters, pagination, and sorting
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('');
@@ -47,10 +49,6 @@ const Dashboard = () => {
   // 2. Load tasks query and operations from custom hook
   const {
     tasksQuery,
-    createTask,
-    isCreating,
-    updateTask,
-    isUpdating,
     deleteTask,
     isDeleting,
     toggleStatus,
@@ -63,43 +61,24 @@ const Dashboard = () => {
   const totalPages = data?.totalPages || 0;
   const totalRecords = data?.totalRecords || 0;
 
-  // 3. Modal control states
-  const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingTask, setEditingTask] = useState(null);
-  
+  // 3. Modal control states for task deletion
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [deletingTaskId, setDeletingTaskId] = useState(null);
 
-  // Trigger task form modal (Create mode)
+  // Trigger task form navigation (Create page)
   const handleAddTaskClick = () => {
-    setEditingTask(null);
-    setIsFormOpen(true);
+    navigate('/tasks/new');
   };
 
-  // Trigger task form modal (Edit mode)
+  // Trigger task form navigation (Edit page)
   const handleEditTaskClick = (task) => {
-    setEditingTask(task);
-    setIsFormOpen(true);
+    navigate(`/tasks/edit/${task._id}`);
   };
 
   // Trigger confirmation modal (Delete mode)
   const handleDeleteTaskClick = (id) => {
     setDeletingTaskId(id);
     setIsDeleteOpen(true);
-  };
-
-  // Form submit handler (both create and update)
-  const handleFormSubmit = async (formData) => {
-    try {
-      if (editingTask) {
-        await updateTask({ id: editingTask._id, taskData: formData });
-      } else {
-        await createTask(formData);
-      }
-      setIsFormOpen(false);
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   // Delete confirm handler
@@ -255,15 +234,6 @@ const Dashboard = () => {
 
       </main>
 
-      {/* Task form Modal (Create / Edit) */}
-      <TaskForm
-        isOpen={isFormOpen}
-        onClose={() => setIsFormOpen(false)}
-        onSubmit={handleFormSubmit}
-        initialData={editingTask}
-        isLoading={isCreating || isUpdating}
-      />
-
       {/* Confirm deletion Modal */}
       <ConfirmModal
         isOpen={isDeleteOpen}
@@ -279,4 +249,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-// Use default export

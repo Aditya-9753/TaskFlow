@@ -8,6 +8,8 @@ import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import CreateTask from './pages/CreateTask';
+import EditTask from './pages/EditTask';
 
 // Create a client for React Query
 const queryClient = new QueryClient({
@@ -66,6 +68,26 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Add Task Full-Page Route */}
+              <Route
+                path="/tasks/new"
+                element={
+                  <ProtectedRoute>
+                    <CreateTask />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Edit Task Full-Page Route */}
+              <Route
+                path="/tasks/edit/:id"
+                element={
+                  <ProtectedRoute>
+                    <EditTask />
                   </ProtectedRoute>
                 }
               />
